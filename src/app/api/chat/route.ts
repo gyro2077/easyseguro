@@ -1,6 +1,9 @@
 import { createOpenAI } from '@ai-sdk/openai';
 import { streamText, convertToModelMessages } from 'ai';
 
+// Permitir que Vercel espere hasta 60 segundos antes de cancelar la petición
+export const maxDuration = 60;
+
 const openrouter = createOpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
   apiKey: process.env.OPENROUTER_API_KEY,
