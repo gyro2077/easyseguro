@@ -13,6 +13,7 @@
     "db:generate": "prisma generate"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.79",
     "@ai-sdk/openai": "^3.0.65",
     "@ai-sdk/react": "^3.0.193",
     "@prisma/client": "^5",
