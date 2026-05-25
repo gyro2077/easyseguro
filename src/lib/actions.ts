@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache"
 import { setSession, clearSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 
-export async function createUser(formData: FormData) {
+export async function createUser(prev: unknown, formData: FormData) {
   const raw = {
     nombre: formData.get("nombre") as string,
     apellido: formData.get("apellido") as string,
@@ -17,6 +17,24 @@ export async function createUser(formData: FormData) {
     password: formData.get("password") as string,
   }
 
+  if (!raw.nombre || !raw.apellido || !raw.correo || !raw.telefono || !raw.cedula || !raw.ciudad || !raw.password) {
+    return { ok: false, error: "Todos los campos son obligatorios." }
+  }
+
+  if (raw.password.length < 6 || !/[A-Z]/.test(raw.password) || !/[a-z]/.test(raw.password)) {
+    return { ok: false, error: "La contraseña no cumple los requisitos de seguridad." }
+  }
+
+  const existingUser = await prisma.user.findUnique({ where: { cedula: raw.cedula } })
+  if (existingUser) {
+    return { ok: false, error: "Esta cédula ya tiene una cuenta registrada. Intenta iniciar sesión." }
+  }
+
+  const existingEmail = await prisma.user.findUnique({ where: { correo: raw.correo } })
+  if (existingEmail) {
+    return { ok: false, error: "Este correo ya está registrado." }
+  }
+
   const hashedPassword = await bcrypt.hash(raw.password, 10)
 
   const user = await prisma.user.create({
@@ -25,7 +43,7 @@ export async function createUser(formData: FormData) {
 
   await setSession(user.id)
   revalidatePath("/cotizar")
-  redirect("/cotizar")
+  return { ok: true }
 }
 
 export async function loginUser(formData: FormData) {

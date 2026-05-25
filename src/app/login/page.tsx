@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useActionState } from "react"
 import { loginUser } from "@/lib/actions"
 
@@ -10,11 +11,29 @@ export default function LoginPage() {
   )
 
   return (
-    <div className="flex flex-col flex-1 min-h-screen">
-      <main className="flex-1 flex flex-col items-center justify-center px-6">
-        <div className="w-16 h-16 bg-brand-blue rounded-2xl flex items-center justify-center mb-6">
-          <span className="text-2xl font-black text-white">ES</span>
+    <div className="flex flex-col min-h-screen bg-[#111827]">
+      {/* Mitad Superior: Logo Horizontal Controlado */}
+      <div className="flex flex-col items-center justify-center pt-16 pb-12 px-6">
+        <div className="flex items-center gap-4">
+          <div className="relative w-16 h-20">
+            <Image
+              src="/icon-192x192.png"
+              alt="Easy Seguro"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+          <div className="flex flex-col justify-center pt-2">
+            <h1 className="text-4xl font-bold text-white tracking-wide leading-none">Easy</h1>
+            <div className="border-t-2 border-brand-yellow mt-1 pt-1">
+              <span className="text-brand-yellow tracking-[0.2em] font-medium text-xs ml-1">SEGURO</span>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <main className="flex-1 bg-white rounded-t-3xl px-6 pt-10 pb-8 flex flex-col items-center w-full">
         <h1 className="text-2xl font-bold text-zinc-900 mb-1">Iniciar sesión</h1>
         <p className="text-zinc-500 text-sm mb-8 text-center">
           Ingresa tu cédula y contraseña
