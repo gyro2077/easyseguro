@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     const recentMessages = modelMessages.slice(-6);
 
     const result = streamText({
-      model: openrouter('google/gemini-2.0-flash-lite-preview-02-05:free'),
+      model: openrouter('google/gemma-4-26b-a4b-it:free'),
       maxOutputTokens: 800,
       system: `Eres el Asistente de Seguros Pichincha en EASYSEGURO. Sé amable, directo y MUY breve (1 párrafo).
 
