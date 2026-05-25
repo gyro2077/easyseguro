@@ -32,7 +32,7 @@ export function DigitalCard({
     <dialog
       ref={dialogRef}
       onClose={onClose}
-      className="w-[90vw] max-w-sm rounded-3xl bg-transparent backdrop:bg-black/60 p-0"
+      className="m-auto inset-0 fixed w-[90vw] max-w-sm rounded-3xl bg-transparent backdrop:bg-black/60 p-0"
     >
       <div className="bg-gradient-to-br from-brand-blue to-blue-900 rounded-3xl p-6 text-white shadow-2xl">
         <div className="flex justify-between items-start mb-6">

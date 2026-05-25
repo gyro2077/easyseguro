@@ -19,6 +19,7 @@ model User {
   profileImage String?
   createdAt    DateTime @default(now())
   policies     Policy[]
+  claims       Claim[]
 }
 
 model Plan {
@@ -43,4 +44,18 @@ model Policy {
   user          User     @relation(fields: [userId], references: [id])
   plan          Plan     @relation(fields: [planId], references: [id])
   createdAt     DateTime @default(now())
+  claims        Claim[]
+}
+
+model Claim {
+  id          String   @id @default(uuid())
+  userId      String
+  policyId    String
+  description String
+  features    String[]
+  status      String   @default("EN REVISIÓN")
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+  policy      Policy   @relation(fields: [policyId], references: [id])
 }

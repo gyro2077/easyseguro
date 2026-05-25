@@ -1,7 +1,7 @@
 "use client"
 
 import { Suspense, useState, useEffect } from "react"
-import { useRouter, useParams } from "next/navigation"
+import { useRouter, useParams, useSearchParams } from "next/navigation"
 import { ProgressBar } from "@/components/ProgressBar"
 
 const paymentMethods = [
@@ -23,7 +23,10 @@ interface PlanInfo {
 function PagoForm() {
   const router = useRouter()
   const params = useParams<{ plan: string }>()
+  const searchParams = useSearchParams()
   const slug = params.plan
+  const isUpgrade = searchParams.get("upgrade") === "true"
+  const policyId = searchParams.get("policyId")
   const [plan, setPlan] = useState<PlanInfo | null>(null)
   const [loadingPlan, setLoadingPlan] = useState(true)
   const [selectedMethod, setSelectedMethod] = useState("")
@@ -52,17 +55,31 @@ function PagoForm() {
     await new Promise((r) => setTimeout(r, 3000))
 
     try {
-      const formData = new FormData()
-      formData.append("userId", "session")
-      formData.append("planId", plan!.id)
-      formData.append("paymentMethod", selectedMethod)
+      if (isUpgrade && policyId && plan) {
+        const res = await fetch("/api/policy/upgrade", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            policyId,
+            newPlanId: plan.id,
+            paymentMethod: selectedMethod,
+            confirmPayment: true,
+          }),
+        })
+        if (!res.ok) throw new Error("Error al actualizar la póliza")
+      } else {
+        const formData = new FormData()
+        formData.append("userId", "session")
+        formData.append("planId", plan!.id)
+        formData.append("paymentMethod", selectedMethod)
 
-      const res = await fetch("/api/policy", {
-        method: "POST",
-        body: formData,
-      })
+        const res = await fetch("/api/policy", {
+          method: "POST",
+          body: formData,
+        })
 
-      if (!res.ok) throw new Error("Error al crear la póliza")
+        if (!res.ok) throw new Error("Error al crear la póliza")
+      }
       setConfirmed(true)
     } catch {
       setConfirmed(true)
@@ -101,10 +118,13 @@ function PagoForm() {
             ¡Felicidades!
           </h1>
           <p className="text-zinc-500 mb-2">
-            Tu póliza de <strong>{plan.name}</strong> está activa.
+            {isUpgrade
+              ? <>Tu plan ha sido actualizado a <strong>{plan.name}</strong>.</>
+              : <>Tu póliza de <strong>{plan.name}</strong> está activa.</>
+            }
           </p>
           <p className="text-zinc-400 text-sm mb-8">
-            Recibirás un correo con los detalles de tu seguro.
+            Recibirás un correo con los detalles.
           </p>
           <button
             onClick={() => router.push("/dashboard")}
@@ -122,10 +142,13 @@ function PagoForm() {
       <main className="flex-1 px-6 py-8 max-w-sm mx-auto w-full">
         <ProgressBar step={4} total={4} />
         <h1 className="text-2xl font-bold text-zinc-900 mt-6 mb-1">
-          Método de pago
+          {isUpgrade ? "Pago de diferencia (Mejora de plan)" : "Método de pago"}
         </h1>
         <p className="text-zinc-500 text-sm mb-6">
-          Plan {plan.name} — <strong className="text-brand-blue">${plan.price.toFixed(2)}/mes</strong>
+          {isUpgrade
+            ? `Mejora a ${plan.name}`
+            : <>Plan {plan.name} — <strong className="text-brand-blue">${plan.price.toFixed(2)}/mes</strong></>
+          }
         </p>
 
         <div className="flex items-center gap-2 mb-6 text-xs text-zinc-400">

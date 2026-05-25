@@ -2,7 +2,9 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { ConfirmModal } from "@/components/ConfirmModal"
 
 interface PlanInfo {
   id: string
@@ -24,6 +26,13 @@ interface PolicyInfo {
   plan: PlanInfo
 }
 
+const exclusions = [
+  "Enfermedades preexistentes no declaradas",
+  "Siniestros bajo efectos del alcohol",
+  "Actos temerarios o intencionales",
+  "Guerra o eventos nucleares",
+]
+
 export function SeguroTabs({
   activePolicy,
   plans,
@@ -33,7 +42,54 @@ export function SeguroTabs({
   plans: PlanInfo[]
   medicalCenters: { name: string; address: string; phone: string }[]
 }) {
+  const router = useRouter()
   const [tab, setTab] = useState<"seguro" | "complementario">("seguro")
+  const [selectedPlan, setSelectedPlan] = useState<PlanInfo | null>(null)
+  const [confirmModal, setConfirmModal] = useState<{
+    title: string
+    message: string
+    onConfirm: () => void
+  } | null>(null)
+  const [upgrading, setUpgrading] = useState(false)
+
+  async function handleChangePlan(newPlan: PlanInfo) {
+    if (!activePolicy) return
+    const isUpgrade = newPlan.price > activePolicy.plan.price
+
+    if (isUpgrade) {
+      setSelectedPlan(null)
+      router.push(`/pago/${newPlan.slug}?upgrade=true&policyId=${activePolicy.id}`)
+      return
+    }
+
+    setUpgrading(true)
+    try {
+      const res = await fetch("/api/policy/upgrade", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          policyId: activePolicy.id,
+          newPlanId: newPlan.id,
+        }),
+      })
+      const data = await res.json()
+
+      if (!data.ok) {
+        toast.error("Error", { description: data.error })
+        return
+      }
+
+      toast.success("Plan actualizado", { description: `Ahora tienes el plan ${data.planName}.` })
+      setSelectedPlan(null)
+      router.refresh()
+    } catch {
+      toast.error("Error de red", { description: "No se pudo procesar la solicitud." })
+    } finally {
+      setUpgrading(false)
+    }
+  }
+
+
 
   return (
     <>
@@ -105,33 +161,41 @@ export function SeguroTabs({
           <p className="text-sm text-zinc-500 mb-4">
             Complementa tu protección con estos seguros adicionales
           </p>
-          {plans.map((p) => (
-            <div
-              key={p.id}
-              className="bg-white rounded-2xl border border-zinc-100 p-5"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold text-zinc-900">{p.name}</h3>
-                <span className="text-sm font-bold text-brand-blue">
-                  ${p.price.toFixed(2)}<span className="text-xs font-normal text-zinc-400">/mes</span>
-                </span>
-              </div>
-              <p className="text-xs text-zinc-500 mb-3">{p.description}</p>
-              <Link
-                href={activePolicy ? "#" : `/cotizar/${p.slug}`}
-                className="inline-block w-full text-center py-2 bg-brand-yellow text-brand-blue rounded-xl text-sm font-semibold hover:bg-yellow-400 transition-colors"
-                onClick={(e) => {
-                  if (!activePolicy) return
-                  e.preventDefault()
-                  toast.info("Contrata este plan complementario desde la sección de cotización.")
-                }}
+          {plans.map((p) => {
+            const isCurrentPlan = activePolicy && p.slug === activePolicy.plan.slug
+            const isUpgrade = activePolicy && p.price > activePolicy.plan.price
+
+            let buttonLabel = "Ver detalles"
+            if (isCurrentPlan) buttonLabel = "Tu plan actual"
+            else if (isUpgrade) buttonLabel = "Mejorar plan"
+            else if (activePolicy) buttonLabel = "Plan inferior"
+
+            return (
+              <div
+                key={p.id}
+                className="bg-white rounded-2xl border border-zinc-100 p-5"
               >
-                {p.slug === "vida-protegida" || p.slug === activePolicy?.plan.slug
-                  ? "Ver detalles"
-                  : "Mejorar plan"}
-              </Link>
-            </div>
-          ))}
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="font-semibold text-zinc-900">{p.name}</h3>
+                  <span className="text-sm font-bold text-brand-blue">
+                    ${p.price.toFixed(2)}<span className="text-xs font-normal text-zinc-400">/mes</span>
+                  </span>
+                </div>
+                <p className="text-xs text-zinc-500 mb-3">{p.description}</p>
+                <button
+                  onClick={() => setSelectedPlan(p)}
+                  disabled={!!isCurrentPlan}
+                  className={`inline-block w-full text-center py-2 rounded-xl text-sm font-semibold transition-colors ${
+                    isCurrentPlan
+                      ? "bg-zinc-100 text-zinc-400 cursor-not-allowed"
+                      : "bg-brand-yellow text-brand-blue hover:bg-yellow-400"
+                  }`}
+                >
+                  {buttonLabel}
+                </button>
+              </div>
+            )
+          })}
         </div>
       )}
 
@@ -145,6 +209,72 @@ export function SeguroTabs({
           </div>
         ))}
       </div>
+
+      {selectedPlan && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-4">
+          <div className="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-md p-6 animate-in slide-in-from-bottom-4 max-h-[85vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-zinc-900">{selectedPlan.name}</h3>
+              <button onClick={() => setSelectedPlan(null)} className="text-zinc-500 hover:text-zinc-700 font-bold text-xl leading-none">&times;</button>
+            </div>
+            <p className="text-sm text-zinc-600 mb-4">{selectedPlan.description}</p>
+
+            <div className="space-y-3 mb-6">
+              <h4 className="font-semibold text-brand-blue text-sm">Lo que cubre:</h4>
+              <ul className="space-y-2">
+                {selectedPlan.features.map((f) => (
+                  <li key={f} className="flex gap-2 text-sm text-zinc-700">
+                    <span className="text-brand-green shrink-0">&#10003;</span>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <h4 className="font-semibold text-red-500 text-sm mt-4">Lo que no cubre:</h4>
+              <ul className="space-y-2">
+                {exclusions.map((exc) => (
+                  <li key={exc} className="flex gap-2 text-sm text-zinc-700">
+                    <span className="text-red-500 shrink-0">&#10007;</span>
+                    <span>{exc}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {activePolicy && selectedPlan.slug !== activePolicy.plan.slug ? (
+              <button
+                onClick={() => handleChangePlan(selectedPlan)}
+                disabled={upgrading}
+                className="w-full bg-brand-blue text-white py-3 rounded-xl font-semibold text-sm hover:bg-blue-900 transition-colors disabled:opacity-50"
+              >
+                {upgrading ? "Procesando..." : "Cambiar a este plan"}
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setSelectedPlan(null)
+                  toast.info("Este es tu plan actual.")
+                }}
+                className="w-full bg-zinc-100 text-zinc-500 py-3 rounded-xl font-semibold text-sm cursor-not-allowed"
+                disabled
+              >
+                Plan actual
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      <ConfirmModal
+        open={!!confirmModal}
+        onClose={() => setConfirmModal(null)}
+        title={confirmModal?.title || ""}
+        message={confirmModal?.message || ""}
+        confirmLabel="Confirmar"
+        onConfirm={() => {
+          confirmModal?.onConfirm()
+          setConfirmModal(null)
+        }}
+      />
     </>
   )
 }

@@ -3,6 +3,23 @@ import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { SESSION_COOKIE } from "@/lib/session"
 
+export async function GET() {
+  const cookieStore = await cookies()
+  const userId = cookieStore.get(SESSION_COOKIE)?.value
+
+  if (!userId) {
+    return NextResponse.json({ ok: false, error: "No autenticado" }, { status: 401 })
+  }
+
+  const policies = await prisma.policy.findMany({
+    where: { userId },
+    include: { plan: true },
+    orderBy: { createdAt: "desc" },
+  })
+
+  return NextResponse.json({ ok: true, policies })
+}
+
 export async function POST(request: Request) {
   const formData = await request.formData()
   const planId = formData.get("planId") as string

@@ -7,7 +7,8 @@ const actions = [
   { label: "Pagar", icon: "💳", color: "bg-brand-blue", id: "pagar" },
   { label: "Reportar", icon: "📋", color: "bg-brand-green", id: "reportar" },
   { label: "Mi póliza", icon: "🛡️", color: "bg-brand-yellow", id: "poliza", href: "/dashboard/seguro" },
-  { label: "Chat", icon: "💬", color: "bg-zinc-800", id: "chat" },
+  { label: "Chat IA", icon: "🤖", color: "bg-zinc-800", id: "chat" },
+  { label: "Asesor Humano", icon: "💬", color: "bg-green-600", id: "whatsapp", fullWidth: true },
 ]
 
 export function QuickActions({ hasPolicy }: { hasPolicy: boolean }) {
@@ -29,11 +30,16 @@ export function QuickActions({ hasPolicy }: { hasPolicy: boolean }) {
         }
         break
       case "reportar":
-        window.location.href = "/dashboard/ayuda"
+        window.location.href = "/dashboard/reportar"
         break
       case "chat":
-        window.open("https://wa.me/593999999999", "_blank")
+        window.location.href = "/dashboard/ayuda"
         break
+      case "whatsapp": {
+        const text = encodeURIComponent("Quiero más información de los servicios")
+        window.open(`https://wa.me/593993899178?text=${text}`, "_blank")
+        break
+      }
     }
   }
 
@@ -45,7 +51,7 @@ export function QuickActions({ hasPolicy }: { hasPolicy: boolean }) {
             <Link
               key={a.id}
               href={a.href}
-              className="flex flex-col items-center justify-center gap-3 bg-white rounded-2xl border border-zinc-100 p-6 hover:shadow-md transition-shadow"
+              className={`flex flex-col items-center justify-center gap-3 bg-white rounded-2xl border border-zinc-100 p-6 hover:shadow-md transition-shadow ${a.fullWidth ? "col-span-2" : ""}`}
             >
               <div className={`w-12 h-12 ${a.color} rounded-xl flex items-center justify-center text-white text-xl`}>
                 {a.icon}
@@ -58,7 +64,7 @@ export function QuickActions({ hasPolicy }: { hasPolicy: boolean }) {
           <button
             key={a.id}
             onClick={() => handleClick(a.id)}
-            className="flex flex-col items-center justify-center gap-3 bg-white rounded-2xl border border-zinc-100 p-6 hover:shadow-md transition-shadow cursor-pointer"
+            className={`flex flex-col items-center justify-center gap-3 bg-white rounded-2xl border border-zinc-100 p-6 hover:shadow-md transition-shadow cursor-pointer ${a.fullWidth ? "col-span-2" : ""}`}
           >
             <div className={`w-12 h-12 ${a.color} rounded-xl flex items-center justify-center text-white text-xl`}>
               {a.icon}
