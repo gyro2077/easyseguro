@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { toast } from "sonner"
 
 interface PlanInfo {
   id: string
@@ -122,7 +123,7 @@ export function SeguroTabs({
                 onClick={(e) => {
                   if (!activePolicy) return
                   e.preventDefault()
-                  alert("Contrata este plan complementario desde la sección de cotización.")
+                  toast.info("Contrata este plan complementario desde la sección de cotización.")
                 }}
               >
                 {p.slug === "vida-protegida" || p.slug === activePolicy?.plan.slug
