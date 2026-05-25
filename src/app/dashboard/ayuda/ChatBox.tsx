@@ -90,18 +90,18 @@ export default function ChatBox() {
         <div ref={chatEndRef} />
       </div>
 
-      <form onSubmit={handleSubmit} className="flex gap-2">
+      <form onSubmit={handleSubmit} className="flex gap-2 w-full">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Escribe tu consulta..."
-          className="flex-1 px-4 py-2.5 rounded-xl text-sm text-zinc-900 bg-white/90 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-white/50"
+          className="flex-1 min-w-0 px-4 py-2.5 rounded-xl text-sm text-zinc-900 bg-white/90 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-white/50"
           disabled={isLoading}
         />
         <button
           type="submit"
           disabled={isLoading || !input.trim()}
-          className="px-4 py-2.5 bg-brand-yellow text-brand-blue rounded-xl text-sm font-semibold hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="shrink-0 px-4 py-2.5 bg-brand-yellow text-brand-blue rounded-xl text-sm font-semibold hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Enviar
         </button>
