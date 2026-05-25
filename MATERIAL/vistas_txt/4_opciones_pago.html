@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Opciones de pago</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#dfe3e7",
+                        "surface-container-high": "#eae7e7",
+                        "surface-container": "#f0eded",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#2f3437",
+                        "primary-container": "#003366",
+                        "on-secondary-fixed": "#221b00",
+                        "on-secondary-fixed-variant": "#544600",
+                        "inverse-primary": "#a7c8ff",
+                        "surface-bright": "#fcf9f8",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#3a5f94",
+                        "primary": "#001e40",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-tertiary-container": "#989ca0",
+                        "secondary-fixed": "#ffe16d",
+                        "on-tertiary-fixed": "#171c1f",
+                        "surface-variant": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#43474b",
+                        "secondary-fixed-dim": "#e9c400",
+                        "surface": "#fcf9f8",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c3c6d1",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#799dd6",
+                        "outline": "#737780",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#1a1f22",
+                        "on-background": "#1c1b1b",
+                        "primary-fixed": "#d5e3ff",
+                        "on-secondary-container": "#6e5c00",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "error": "#ba1a1a",
+                        "on-surface": "#1c1b1b",
+                        "tertiary-fixed-dim": "#c3c7cb",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-primary-fixed": "#001b3c",
+                        "inverse-surface": "#313030",
+                        "background": "#fcf9f8",
+                        "secondary-container": "#fcd400",
+                        "on-surface-variant": "#43474f",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#705d00",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "lg": "24px",
+                        "stack-gap": "12px",
+                        "container-margin": "20px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "display-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "headline-sm-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "34px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-sm-mobile": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Custom radio button styles to match design system */
+        input[type="radio"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: transparent;
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 24px;
+            height: 24px;
+            border: 2px solid theme('colors.outline-variant');
+            border-radius: 50%;
+            display: grid;
+            place-content: center;
+        }
+
+        input[type="radio"]::before {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em theme('colors.primary');
+        }
+
+        input[type="radio"]:checked {
+            border-color: theme('colors.primary');
+        }
+
+        input[type="radio"]:checked::before {
+            transform: scale(1);
+        }
+
+        .ambient-shadow-1 {
+            box-shadow: 0px 4px 20px rgba(0, 51, 102, 0.08);
+        }
+
+        .ambient-shadow-2 {
+            box-shadow: 0px 8px 30px rgba(0, 51, 102, 0.12);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col md:max-w-md md:mx-auto md:shadow-2xl md:border md:border-outline-variant">
+    <!-- Top Navigation (Transactional - simplified) -->
+    <header
+        class="bg-primary text-on-primary w-full p-container-margin flex items-center justify-between shadow-md z-10 sticky top-0">
+        <div class="flex items-center gap-sm">
+            <button aria-label="Go back" class="p-2 -ml-2 rounded-full hover:bg-primary-container transition-colors">
+                <span class="material-symbols-outlined text-on-primary">arrow_back</span>
+            </button>
+            <h1 class="font-headline-sm-mobile text-headline-sm-mobile font-bold tracking-tight">Opciones de pago</h1>
+        </div>
+    </header>
+    <!-- Main Content Area -->
+    <main class="flex-grow flex flex-col relative z-0">
+        <!-- Progress Indicator -->
+        <div class="w-full h-1 bg-surface-variant flex">
+            <div class="w-3/4 h-full bg-secondary-container"></div>
+        </div>
+        <!-- Order Summary Banner -->
+        <div class="bg-primary-fixed/30 p-container-margin border-b border-primary-fixed-dim">
+            <div class="flex items-start justify-between">
+                <div>
+                    <h2 class="font-headline-sm-mobile text-headline-sm-mobile text-primary font-bold">Vida Protegida
+                        <span class="text-xl">🛡️</span></h2>
+                    <div class="mt-xs text-primary-fixed-variant font-label-md text-label-md">
+                        <span class="font-bold">$8 / mes</span>
+                        <span class="mx-1 opacity-50">•</span>
+                        <span class="underline decoration-primary-fixed-dim underline-offset-2">Cobertura hasta
+                            $30,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="px-container-margin py-lg flex-grow flex flex-col">
+            <h3 class="font-headline-sm-mobile text-headline-sm-mobile text-on-surface font-bold mb-md">¿Cómo quieres
+                pagar?</h3>
+            <!-- Payment Options Form -->
+            <form class="flex flex-col gap-stack-gap" id="payment-form">
+                <!-- Option 1: Credit Card -->
+                <label
+                    class="relative flex items-center p-md bg-surface-container-lowest border border-outline-variant rounded-2xl cursor-pointer hover:bg-surface-container-low transition-colors ambient-shadow-1">
+                    <div class="mr-md flex-shrink-0">
+                        <input name="payment_method" type="radio" value="credit_card" />
+                    </div>
+                    <div class="mr-md flex-shrink-0 text-primary">
+                        <span class="material-symbols-outlined text-[32px]"
+                            style="font-variation-settings: 'FILL' 0;">credit_card</span>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="font-headline-sm-mobile text-headline-sm-mobile text-on-surface font-semibold">
+                            Tarjeta de crédito</div>
+                        <div class="font-body-md text-body-md text-on-surface-variant text-sm mt-xs">Visa, Mastercard,
+                            American Express</div>
+                    </div>
+                </label>
+                <!-- Option 2: Debit Card (Recommended) -->
+                <label
+                    class="relative flex items-center p-md bg-primary-fixed/20 border-2 border-primary rounded-2xl cursor-pointer hover:bg-primary-fixed/30 transition-colors ambient-shadow-1">
+                    <div class="mr-md flex-shrink-0">
+                        <input checked="" name="payment_method" type="radio" value="debit_card" />
+                    </div>
+                    <div class="mr-md flex-shrink-0 text-primary">
+                        <span class="material-symbols-outlined text-[32px]"
+                            style="font-variation-settings: 'FILL' 0;">payments</span>
+                    </div>
+                    <div class="flex-grow relative">
+                        <div class="font-headline-sm-mobile text-headline-sm-mobile text-primary font-bold">Tarjeta de
+                            débito</div>
+                        <div class="font-body-md text-body-md text-on-surface-variant text-sm mt-xs">Cualquier banco del
+                            Ecuador</div>
+                        <!-- Recommended Badge -->
+                        <div
+                            class="absolute -right-2 -bottom-2 md:bottom-auto md:top-1/2 md:-translate-y-1/2 bg-secondary-container text-on-secondary-container font-label-sm text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-lg">
+                            Recomendado
+                        </div>
+                    </div>
+                </label>
+                <!-- Option 3: Bank Account -->
+                <label
+                    class="relative flex items-center p-md bg-surface-container-lowest border border-outline-variant rounded-2xl cursor-pointer hover:bg-surface-container-low transition-colors ambient-shadow-1">
+                    <div class="mr-md flex-shrink-0">
+                        <input name="payment_method" type="radio" value="bank_account" />
+                    </div>
+                    <div class="mr-md flex-shrink-0 text-primary">
+                        <span class="material-symbols-outlined text-[32px]"
+                            style="font-variation-settings: 'FILL' 0;">account_balance</span>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="font-headline-sm-mobile text-headline-sm-mobile text-on-surface font-semibold">
+                            Cuenta Pichincha</div>
+                        <div class="font-body-md text-body-md text-on-surface-variant text-sm mt-xs">Débito automático
+                            mes a mes</div>
+                    </div>
+                </label>
+            </form>
+            <!-- Spacing to push bottom section down if needed -->
+            <div class="flex-grow min-h-[40px]"></div>
+            <!-- Trust Indicator -->
+            <div class="flex justify-center items-center gap-xs py-md opacity-70">
+                <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">lock</span>
+                <span class="font-label-sm text-label-sm text-on-surface-variant">Pago 100% seguro y encriptado</span>
+            </div>
+            <!-- Floating Action Area -->
+            <div class="pb-container-margin pt-sm bg-surface sticky bottom-0">
+                <button
+                    class="w-full bg-secondary-container text-on-secondary-container font-headline-sm-mobile text-headline-sm-mobile font-bold py-4 rounded-full ambient-shadow-2 flex justify-center items-center gap-sm hover:scale-[0.98] transition-transform active:scale-95"
+                    type="button">
+                    Confirmar y pagar
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+    </main>
+    <!-- Suppressed Bottom Navigation & FAB for transactional page per rules -->
+    <script>
+        // Simple interaction script to update styling based on radio selection
+        document.addEventListener('DOMContentLoaded', () => {
+            const labels = document.querySelectorAll('form label');
+            const radios = document.querySelectorAll('input[type="radio"]');
+
+            function updateStyles() {
+                radios.forEach(radio => {
+                    const label = radio.closest('label');
+                    const title = label.querySelector('.font-headline-sm-mobile');
+
+                    if (radio.checked) {
+                        label.classList.remove('bg-surface-container-lowest', 'border-outline-variant');
+                        label.classList.add('bg-primary-fixed/20', 'border-2', 'border-primary');
+                        title.classList.add('text-primary', 'font-bold');
+                        title.classList.remove('text-on-surface', 'font-semibold');
+                    } else {
+                        label.classList.add('bg-surface-container-lowest', 'border-outline-variant');
+                        label.classList.remove('bg-primary-fixed/20', 'border-2', 'border-primary');
+                        title.classList.remove('text-primary', 'font-bold');
+                        title.classList.add('text-on-surface', 'font-semibold');
+                    }
+                });
+            }
+
+            radios.forEach(radio => {
+                radio.addEventListener('change', updateStyles);
+            });
+        });
+    </script>
+</body>
+
+</html>

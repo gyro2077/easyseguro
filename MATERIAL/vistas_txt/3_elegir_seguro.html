@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Elige tu seguro</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#dfe3e7",
+                        "surface-container-high": "#eae7e7",
+                        "surface-container": "#f0eded",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#2f3437",
+                        "primary-container": "#003366",
+                        "on-secondary-fixed": "#221b00",
+                        "on-secondary-fixed-variant": "#544600",
+                        "inverse-primary": "#a7c8ff",
+                        "surface-bright": "#fcf9f8",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#3a5f94",
+                        "primary": "#001e40",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-tertiary-container": "#989ca0",
+                        "secondary-fixed": "#ffe16d",
+                        "on-tertiary-fixed": "#171c1f",
+                        "surface-variant": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#43474b",
+                        "secondary-fixed-dim": "#e9c400",
+                        "surface": "#fcf9f8",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c3c6d1",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#799dd6",
+                        "outline": "#737780",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#1a1f22",
+                        "on-background": "#1c1b1b",
+                        "primary-fixed": "#d5e3ff",
+                        "on-secondary-container": "#6e5c00",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "error": "#ba1a1a",
+                        "on-surface": "#1c1b1b",
+                        "tertiary-fixed-dim": "#c3c7cb",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-primary-fixed": "#001b3c",
+                        "inverse-surface": "#313030",
+                        "background": "#fcf9f8",
+                        "secondary-container": "#fcd400",
+                        "on-surface-variant": "#43474f",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#705d00",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "lg": "24px",
+                        "stack-gap": "12px",
+                        "container-margin": "20px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "display-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "34px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        /* Custom radio button styles to match design */
+        .custom-radio {
+            appearance: none;
+            margin: 0;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--tw-colors-outline-variant);
+            border-radius: 50%;
+            display: grid;
+            place-content: center;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .custom-radio::before {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            background-color: var(--tw-colors-primary);
+        }
+
+        .custom-radio:checked {
+            border-color: var(--tw-colors-primary);
+        }
+
+        .custom-radio:checked::before {
+            transform: scale(1);
+        }
+
+        .tier-card {
+            transition: all 0.3s ease;
+        }
+
+        .tier-card:has(input:checked) {
+            border-color: var(--tw-colors-primary);
+            background-color: rgba(213, 227, 255, 0.2);
+            /* primary-fixed very light */
+            box-shadow: 0px 8px 30px rgba(0, 51, 102, 0.12);
+            /* Level 2 Ambient Shadow */
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+    <!-- Top Header (Task-Focused / Linear Flow) -->
+    <header class="bg-primary pt-12 pb-4 px-container-margin flex items-center gap-md sticky top-0 z-10">
+        <button aria-label="Volver"
+            class="text-on-primary hover:bg-primary-container p-2 -ml-2 rounded-full transition-colors flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl">arrow_back</span>
+        </button>
+        <h1 class="text-headline-sm-mobile font-headline-sm-mobile font-bold text-on-primary">Elige tu seguro</h1>
+    </header>
+    <!-- Progress Bar -->
+    <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" class="w-full h-2 bg-surface-container-high"
+        role="progressbar">
+        <div class="h-full bg-secondary-container w-[60%] rounded-r-full"></div>
+    </div>
+    <!-- Main Content Canvas -->
+    <main class="flex-1 px-container-margin py-lg flex flex-col w-full max-w-md mx-auto">
+        <p class="text-center text-body-lg font-body-lg italic text-on-surface-variant mb-lg">
+            ¿Cuál se adapta mejor a ti?
+        </p>
+        <!-- Cards Container -->
+        <div class="flex flex-col gap-stack-gap">
+            <!-- Tier 1: Básico -->
+            <label
+                class="tier-card relative block w-full bg-surface border border-outline-variant rounded-[24px] p-md cursor-pointer shadow-[0px_4px_20px_rgba(0,51,102,0.08)]">
+                <div class="flex items-start gap-md">
+                    <div class="pt-1">
+                        <input class="custom-radio" name="insurance_tier" type="radio" value="basico" />
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start mb-sm">
+                            <span class="material-symbols-outlined text-[32px] text-primary fill">shield</span>
+                            <span
+                                class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-label-sm font-label-sm font-bold">
+                                Básico
+                            </span>
+                        </div>
+                        <h2 class="text-headline-sm-mobile font-headline-sm-mobile font-bold text-on-surface">Vida
+                            Protegida</h2>
+                        <div class="text-display-lg-mobile font-display-lg-mobile font-bold text-primary my-xs">$8/mes
+                        </div>
+                        <p class="text-body-md font-body-md text-on-surface-variant line-clamp-2">
+                            Cobertura básica por fallecimiento
+                        </p>
+                    </div>
+                </div>
+            </label>
+            <!-- Tier 2: Popular (Recommended) -->
+            <label
+                class="tier-card relative block w-full bg-surface border border-outline-variant rounded-[24px] p-md cursor-pointer shadow-[0px_4px_20px_rgba(0,51,102,0.08)]">
+                <div class="flex items-start gap-md">
+                    <div class="pt-1">
+                        <input checked="" class="custom-radio" name="insurance_tier" type="radio" value="popular" />
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start mb-sm">
+                            <span class="material-symbols-outlined text-[32px] text-primary">star</span>
+                            <span
+                                class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-sm font-label-sm font-bold">
+                                Popular
+                            </span>
+                        </div>
+                        <h2 class="text-headline-sm-mobile font-headline-sm-mobile font-bold text-on-surface">Amparo
+                            Plus</h2>
+                        <div class="text-display-lg-mobile font-display-lg-mobile font-bold text-primary my-xs">$28/mes
+                        </div>
+                        <p class="text-body-md font-body-md text-on-surface-variant line-clamp-2">
+                            Fallecimiento + invalidez
+                        </p>
+                    </div>
+                </div>
+            </label>
+            <!-- Tier 3: Completo -->
+            <label
+                class="tier-card relative block w-full bg-surface border border-outline-variant rounded-[24px] p-md cursor-pointer shadow-[0px_4px_20px_rgba(0,51,102,0.08)]">
+                <div class="flex items-start gap-md">
+                    <div class="pt-1">
+                        <input class="custom-radio" name="insurance_tier" type="radio" value="completo" />
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start mb-sm">
+                            <span class="material-symbols-outlined text-[32px] text-primary">assignment</span>
+                            <span
+                                class="bg-primary text-on-primary px-3 py-1 rounded-full text-label-sm font-label-sm font-bold">
+                                Completo
+                            </span>
+                        </div>
+                        <h2 class="text-headline-sm-mobile font-headline-sm-mobile font-bold text-on-surface">Amparo
+                            Seguro</h2>
+                        <div class="text-display-lg-mobile font-display-lg-mobile font-bold text-primary my-xs">$55/mes
+                        </div>
+                        <p class="text-body-md font-body-md text-on-surface-variant line-clamp-2">
+                            Cobertura completa + enf. graves
+                        </p>
+                    </div>
+                </div>
+            </label>
+        </div>
+        <!-- Action Area -->
+        <div class="mt-lg pt-md">
+            <button
+                class="w-full bg-secondary-container text-primary font-label-md text-label-md font-bold py-4 rounded-full shadow-[0px_4px_20px_rgba(0,51,102,0.08)] hover:brightness-95 active:scale-95 transition-all flex justify-center items-center gap-2">
+                Continuar
+                <span class="material-symbols-outlined text-lg">arrow_forward</span>
+            </button>
+        </div>
+    </main>
+    <!-- Note: Navigation Shell (BottomNavBar) is intentionally suppressed here as this is a linear/transactional flow per the guidelines. -->
+</body>
+
+</html>
