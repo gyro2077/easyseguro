@@ -7,6 +7,10 @@ export const maxDuration = 60;
 const openrouter = createOpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
   apiKey: process.env.OPENROUTER_API_KEY,
+  headers: {
+    "HTTP-Referer": "https://easyseguro.vercel.app",
+    "X-Title": "EasySeguro PWA",
+  }
 });
 
 export async function POST(req: Request) {
@@ -18,7 +22,7 @@ export async function POST(req: Request) {
     const recentMessages = modelMessages.slice(-6);
 
     const result = streamText({
-      model: openrouter('deepseek/deepseek-v4-flash:free'),
+      model: openrouter('google/gemini-2.0-flash-lite-preview-02-05:free'),
       maxOutputTokens: 800,
       system: `Eres el Asistente de Seguros Pichincha en EASYSEGURO. Sé amable, directo y MUY breve (1 párrafo).
 
