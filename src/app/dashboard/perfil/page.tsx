@@ -1,57 +1,61 @@
+import { Suspense } from "react"
+import { requireSession } from "@/lib/session"
+import { getUserWithPolicy, getUserPolicies } from "@/lib/data"
+import { PerfilContent } from "./PerfilContent"
+
+async function PerfilData() {
+  const userId = await requireSession()
+  const user = await getUserWithPolicy(userId)
+  const policies = await getUserPolicies(userId)
+
+  if (!user) {
+    return <p className="text-center py-16 text-zinc-400">Usuario no encontrado</p>
+  }
+
+  const initials = `${user.nombre.charAt(0)}${user.apellido.charAt(0)}`.toUpperCase()
+  const fullName = `${user.nombre} ${user.apellido}`
+  const activePolicy = policies.find((p) => p.status === "ACTIVE")
+
+  return (
+    <PerfilContent
+      userId={user.id}
+      userName={fullName}
+      userEmail={user.correo}
+      userCedula={user.cedula}
+      profileImage={user.profileImage}
+      initials={initials}
+      policies={policies.map((p) => ({
+        id: p.id,
+        planName: p.plan.name,
+        status: p.status,
+        createdAt: p.createdAt,
+      }))}
+      activePolicyId={activePolicy?.id}
+      activePolicyPlan={activePolicy?.plan.name}
+    />
+  )
+}
+
 export default function PerfilPage() {
   return (
-    <main className="flex-1 px-6 py-8 max-w-lg mx-auto w-full">
-      <h1 className="text-2xl font-bold text-zinc-900 mb-6">Mi Perfil</h1>
-
-      <div className="flex items-center gap-4 mb-8">
-        <div className="w-16 h-16 bg-brand-blue rounded-full flex items-center justify-center text-2xl font-bold text-white">
-          JP
-        </div>
-        <div>
-          <p className="font-semibold text-zinc-900">Juan Pérez</p>
-          <p className="text-sm text-zinc-400">juan@email.com</p>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <section className="bg-white rounded-2xl border border-zinc-100 p-5">
-          <h2 className="font-semibold text-zinc-900 mb-3">Historial de seguros</h2>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-zinc-700">Vida Protegida</p>
-                <p className="text-xs text-zinc-400">Desde may 2026</p>
+    <Suspense
+      fallback={
+        <main className="flex-1 px-6 py-8 max-w-lg mx-auto w-full">
+          <div className="animate-pulse space-y-6">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-zinc-100 rounded-full" />
+              <div className="space-y-2">
+                <div className="h-5 bg-zinc-100 rounded-xl w-36" />
+                <div className="h-4 bg-zinc-100 rounded-xl w-48" />
               </div>
-              <span className="text-xs bg-brand-green/10 text-brand-green font-medium px-2 py-1 rounded-full">
-                ACTIVO
-              </span>
             </div>
+            <div className="h-32 bg-zinc-100 rounded-2xl" />
+            <div className="h-24 bg-zinc-100 rounded-2xl" />
           </div>
-        </section>
-
-        <section className="bg-white rounded-2xl border border-zinc-100 p-5">
-          <h2 className="font-semibold text-zinc-900 mb-3">Métodos de pago</h2>
-          <div className="flex items-center gap-3">
-            <span className="text-lg">💳</span>
-            <div>
-              <p className="text-sm font-medium text-zinc-700">Tarjeta de débito</p>
-              <p className="text-xs text-zinc-400">•••• 1234</p>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white rounded-2xl border border-zinc-100 p-5">
-          <h2 className="font-semibold text-zinc-900 mb-3">Documentos</h2>
-          <div className="space-y-2">
-            <button className="w-full text-left text-sm text-brand-blue hover:text-blue-700 transition-colors">
-              📄 Ver carnet digital
-            </button>
-            <button className="w-full text-left text-sm text-brand-blue hover:text-blue-700 transition-colors">
-              📄 Descargar póliza PDF
-            </button>
-          </div>
-        </section>
-      </div>
-    </main>
+        </main>
+      }
+    >
+      <PerfilData />
+    </Suspense>
   )
 }

@@ -52,6 +52,19 @@ export async function logoutUser() {
   redirect("/")
 }
 
+export async function updateProfileImage(formData: FormData) {
+  const userId = formData.get("userId") as string
+  const imageUrl = formData.get("imageUrl") as string
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { profileImage: imageUrl },
+  })
+
+  revalidatePath("/dashboard/perfil")
+  return { ok: true }
+}
+
 export async function createPolicy(formData: FormData) {
   const userId = formData.get("userId") as string
   const planId = formData.get("planId") as string

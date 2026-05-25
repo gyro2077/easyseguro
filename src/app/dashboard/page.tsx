@@ -3,13 +3,7 @@ import Link from "next/link"
 import { requireSession } from "@/lib/session"
 import { getUserWithPolicy, getUserPolicies } from "@/lib/data"
 import { logoutUser } from "@/lib/actions"
-
-const quickActions = [
-  { label: "Pagar", icon: "💳", href: "#", color: "bg-brand-blue" },
-  { label: "Reportar", icon: "📋", href: "#", color: "bg-brand-green" },
-  { label: "Mi póliza", icon: "🛡️", href: "/dashboard/seguro", color: "bg-brand-yellow" },
-  { label: "Chat", icon: "💬", href: "#", color: "bg-zinc-800" },
-]
+import { QuickActions } from "./QuickActions"
 
 async function DashboardContent() {
   const userId = await requireSession()
@@ -68,22 +62,7 @@ async function DashboardContent() {
       )}
 
       <h2 className="text-lg font-semibold text-zinc-900 mb-4">Acciones rápidas</h2>
-      <div className="grid grid-cols-2 gap-4">
-        {quickActions.map((action) => (
-          <Link
-            key={action.label}
-            href={action.href}
-            className="flex flex-col items-center justify-center gap-3 bg-white rounded-2xl border border-zinc-100 p-6 hover:shadow-md transition-shadow"
-          >
-            <div
-              className={`w-12 h-12 ${action.color} rounded-xl flex items-center justify-center text-white text-xl`}
-            >
-              {action.icon}
-            </div>
-            <span className="text-sm font-medium text-zinc-700">{action.label}</span>
-          </Link>
-        ))}
-      </div>
+      <QuickActions hasPolicy={!!activePolicy} />
     </main>
   )
 }

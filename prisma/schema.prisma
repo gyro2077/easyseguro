@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  nombre    String
-  apellido  String
-  correo    String   @unique
-  telefono  String
-  cedula    String   @unique
-  password  String
-  ciudad    String
-  createdAt DateTime @default(now())
-  policies  Policy[]
+  id           String   @id @default(uuid())
+  nombre       String
+  apellido     String
+  correo       String   @unique
+  telefono     String
+  cedula       String   @unique
+  password     String
+  ciudad       String
+  profileImage String?
+  createdAt    DateTime @default(now())
+  policies     Policy[]
 }
 
 model Plan {
