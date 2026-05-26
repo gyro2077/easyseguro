@@ -12,10 +12,11 @@ model User {
   nombre       String
   apellido     String
   correo       String   @unique
-  telefono     String
+  telefono     String   @default("")
   cedula       String   @unique
-  password     String
-  ciudad       String
+  password     String?
+  googleId     String?  @unique
+  ciudad       String   @default("")
   profileImage String?
   createdAt    DateTime @default(now())
   policies     Policy[]

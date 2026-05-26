@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import Script from "next/script"
 import { Toaster } from "sonner"
+import AuthProvider from "@/components/AuthProvider"
 import "./globals.css"
 
 const inter = Inter({
@@ -49,7 +50,7 @@ export default function RootLayout({
           }}
         />
         <Toaster position="top-center" richColors />
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   )

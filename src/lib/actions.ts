@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { setSession, clearSession } from "@/lib/session"
+import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 
 export async function createUser(prev: unknown, formData: FormData) {
@@ -17,8 +18,46 @@ export async function createUser(prev: unknown, formData: FormData) {
     password: formData.get("password") as string,
   }
 
-  if (!raw.nombre || !raw.apellido || !raw.correo || !raw.telefono || !raw.cedula || !raw.ciudad || !raw.password) {
+  if (!raw.nombre || !raw.apellido || !raw.correo || !raw.telefono || !raw.cedula || !raw.ciudad) {
     return { ok: false, error: "Todos los campos son obligatorios." }
+  }
+
+  // Check if there's an active NextAuth session (Google user completing profile)
+  const nextAuthSession = await auth()
+  if (nextAuthSession?.user?.id) {
+    const existing = await prisma.user.findUnique({ where: { id: nextAuthSession.user.id } })
+    if (!existing) return { ok: false, error: "Usuario no encontrado." }
+
+    if (!raw.cedula || raw.cedula.length < 10) {
+      return { ok: false, error: "Cédula inválida." }
+    }
+
+    const cedulaTaken = await prisma.user.findFirst({
+      where: { cedula: raw.cedula, id: { not: existing.id } },
+    })
+    if (cedulaTaken) {
+      return { ok: false, error: "Esta cédula ya está registrada." }
+    }
+
+    await prisma.user.update({
+      where: { id: existing.id },
+      data: {
+        nombre: raw.nombre,
+        apellido: raw.apellido,
+        telefono: raw.telefono,
+        cedula: raw.cedula,
+        ciudad: raw.ciudad,
+      },
+    })
+
+    await setSession(existing.id)
+    revalidatePath("/cotizar")
+    return { ok: true }
+  }
+
+  // Manual registration
+  if (!raw.password) {
+    return { ok: false, error: "La contraseña es obligatoria." }
   }
 
   if (raw.password.length < 6 || !/[A-Z]/.test(raw.password) || !/[a-z]/.test(raw.password)) {
