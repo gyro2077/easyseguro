@@ -174,14 +174,20 @@ export default function RegistroPage() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label htmlFor="nombre" className="block text-sm font-medium text-zinc-700 mb-1">Nombre</label>
-              <input id="nombre" name="nombre" value={form.nombre} readOnly
-                className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-500 outline-none"
+              <input id="nombre" name="nombre" value={form.nombre}
+                onChange={(e) => setForm((p) => ({ ...p, nombre: e.target.value }))}
+                required
+                className="w-full px-4 py-3 rounded-xl border border-zinc-200 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none transition-all"
+                placeholder="Tu nombre"
               />
             </div>
             <div>
               <label htmlFor="apellido" className="block text-sm font-medium text-zinc-700 mb-1">Apellido</label>
-              <input id="apellido" name="apellido" value={form.apellido} readOnly
-                className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-500 outline-none"
+              <input id="apellido" name="apellido" value={form.apellido}
+                onChange={(e) => setForm((p) => ({ ...p, apellido: e.target.value }))}
+                required
+                className="w-full px-4 py-3 rounded-xl border border-zinc-200 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none transition-all"
+                placeholder="Tu apellido"
               />
             </div>
           </div>
