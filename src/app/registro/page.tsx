@@ -3,6 +3,7 @@
 import { useState, useActionState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { ProgressBar } from "@/components/ProgressBar"
+import DocumentScanner from "@/components/DocumentScanner"
 import { createUser } from "@/lib/actions"
 
 const ECUADOR_PROVINCES: Record<string, string[]> = {
@@ -66,6 +67,8 @@ export default function RegistroPage() {
     ciudad: "",
     password: "",
   })
+  const [showScanner, setShowScanner] = useState(false)
+  const [scannerError, setScannerError] = useState<string | null>(null)
   const [selectedProvincia, setSelectedProvincia] = useState("")
   const [showOtraCiudad, setShowOtraCiudad] = useState(false)
   const [otraCiudad, setOtraCiudad] = useState("")
@@ -94,6 +97,17 @@ export default function RegistroPage() {
     setForm((p) => ({ ...p, ciudad: p.ciudad }))
   }
 
+  function handleScanResult(data: { nombres: string; apellidos: string; cedula: string }) {
+    setForm((p) => ({
+      ...p,
+      nombre: data.nombres,
+      apellido: data.apellidos,
+      cedula: data.cedula,
+    }))
+    setShowScanner(false)
+    setScannerError(null)
+  }
+
   const cedulaValida = form.cedula.length === 10 && validateCedula(form.cedula)
   const cedulaError = form.cedula.length === 10 && !cedulaValida
 
@@ -115,6 +129,14 @@ export default function RegistroPage() {
             Completa tus datos para empezar
           </p>
         </div>
+
+        {showScanner && (
+          <DocumentScanner
+            onResult={handleScanResult}
+            onError={(msg) => setScannerError(msg)}
+            onClose={() => { setShowScanner(false); setScannerError(null) }}
+          />
+        )}
 
         <form action={formAction} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
@@ -205,6 +227,16 @@ export default function RegistroPage() {
             {form.cedula.length === 10 && cedulaValida && (
               <p className="text-xs text-green-600 mt-1">Cédula válida</p>
             )}
+            {scannerError && (
+              <p className="text-xs text-red-500 mt-1">{scannerError}</p>
+            )}
+            <button
+              type="button"
+              onClick={() => setShowScanner(true)}
+              className="mt-2 w-full py-2.5 rounded-xl border-2 border-dashed border-zinc-300 text-sm text-zinc-500 hover:border-brand-blue hover:text-brand-blue transition-all"
+            >
+              📷 Escanear cédula con la cámara
+            </button>
           </div>
 
           <div>
