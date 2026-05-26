@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 
     const result = await generateText({
       model: google('gemini-2.5-flash'),
-      maxTokens: 1024,
+      maxOutputTokens: 1024,
       messages: [
         {
           role: 'user',

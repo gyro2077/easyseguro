@@ -84,9 +84,9 @@ export default function RegistroPage() {
       sessionSynced.current = true
       setForm((p) => ({
         ...p,
-        nombre: p.nombre || session.user.name?.split(" ")[0] || "",
-        apellido: p.apellido || session.user.name?.split(" ").slice(1).join(" ") || "",
-        correo: p.correo || session.user.email || "",
+        nombre: p.nombre || session?.user?.name?.split(" ")[0] || "",
+        apellido: p.apellido || session?.user?.name?.split(" ").slice(1).join(" ") || "",
+        correo: p.correo || session?.user?.email || "",
       }))
       setIsGoogle(true)
       setStep("scan")

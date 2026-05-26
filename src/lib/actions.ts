@@ -94,6 +94,10 @@ export async function loginUser(formData: FormData) {
     return { ok: false, error: "Usuario no encontrado. Verifica tu cédula." }
   }
 
+  if (!user.password) {
+    return { ok: false, error: "Este usuario se registró con Google. Por favor, inicia sesión con Google." }
+  }
+
   const valid = await bcrypt.compare(password, user.password)
   if (!valid) {
     return { ok: false, error: "Contraseña incorrecta." }

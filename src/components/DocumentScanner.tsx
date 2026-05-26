@@ -44,8 +44,8 @@ export default function DocumentScanner({ onResult, onError, onClose }: Document
   }, [onResult, onError])
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center px-6">
-      <div className="relative w-full max-w-sm aspect-[3/4] overflow-hidden rounded-2xl bg-black">
+    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black">
+      <div className="relative w-full h-full overflow-hidden">
         <Webcam
           ref={webcamRef}
           screenshotFormat="image/jpeg"
@@ -72,13 +72,6 @@ export default function DocumentScanner({ onResult, onError, onClose }: Document
         ) : (
           <div className="w-12 h-12 rounded-full border-4 border-brand-blue" />
         )}
-      </button>
-
-      <button
-        onClick={onClose}
-        className="mt-6 text-white/50 text-sm underline underline-offset-2 hover:text-white/80 transition-colors"
-      >
-        Cancelar
       </button>
     </div>
   )
