@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     q: "¿Puedo cambiar de plan?",
-    a: "Sí, puedes solicitar el cambio desde la sección 'Mi seguro' o contactando a nuestro asistente.",
+    a: "Sí, puedes solicitar el cambio desde la sección 'Mi seguro' o contactando a EASY Assist.",
   },
   {
     q: "¿Cómo obtengo mi carnet digital?",

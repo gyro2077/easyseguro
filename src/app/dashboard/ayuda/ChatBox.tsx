@@ -3,6 +3,7 @@
 import { useChat } from "@ai-sdk/react"
 import { useRef, useEffect, useState } from "react"
 import ReactMarkdown from "react-markdown"
+import Image from "next/image"
 
 export default function ChatBox() {
   const { messages, sendMessage, status, error } = useChat()
@@ -30,11 +31,16 @@ export default function ChatBox() {
   return (
     <div className="bg-gradient-to-br from-brand-blue to-blue-900 rounded-2xl p-5 text-white mb-8">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-lg">
-          🤖
+        <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center relative overflow-hidden">
+          <Image
+            src="/easy-assist.png"
+            alt="EASY Assist"
+            fill
+            className="object-contain p-1"
+          />
         </div>
         <div>
-          <p className="font-semibold">Asistente Virtual</p>
+          <p className="font-semibold">EASY Assist</p>
           <p className="text-xs opacity-80">Disponible 24/7</p>
         </div>
       </div>
@@ -42,7 +48,7 @@ export default function ChatBox() {
       <div className="space-y-3 max-h-80 overflow-y-auto mb-4 pr-1 scrollbar-thin">
         {messages.length === 0 && (
           <div className="bg-white/10 rounded-xl p-3 text-sm">
-            ¡Hola! Soy el asistente virtual de EASYSEGURO. Pregúntame sobre tus seguros, pólizas, siniestros o cualquier duda que tengas.
+            ¡Hola! Soy EASY Assist, tu asistente virtual de EASYSEGURO. Pregúntame sobre tus seguros, pólizas, siniestros o cualquier duda que tengas.
           </div>
         )}
         {messages.map((m) => (
