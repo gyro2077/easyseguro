@@ -85,7 +85,7 @@ export async function createUser(prev: unknown, formData: FormData) {
   return { ok: true }
 }
 
-export async function loginUser(formData: FormData) {
+export async function loginUser(prev: any, formData: FormData) {
   const cedula = formData.get("cedula") as string
   const password = formData.get("password") as string
 

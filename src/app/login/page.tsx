@@ -1,36 +1,13 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
-import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useState, useActionState } from "react"
+import { loginUser } from "@/lib/actions"
 
 export default function LoginPage() {
-  const router = useRouter()
   const [cedula, setCedula] = useState("")
   const [password, setPassword] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [pending, setPending] = useState(false)
-
-  async function handleManualLogin(e: React.FormEvent) {
-    e.preventDefault()
-    setPending(true)
-    setError(null)
-
-    const result = await signIn("credentials", {
-      cedula,
-      password,
-      redirect: false,
-    })
-
-    if (result?.error) {
-      setError("Cédula o contraseña incorrectos")
-      setPending(false)
-    } else {
-      router.push("/dashboard")
-      router.refresh()
-    }
-  }
+  const [state, formAction, isPending] = useActionState(loginUser, null)
 
   return (
     <div className="flex flex-col min-h-screen bg-[#111827]">
@@ -62,13 +39,14 @@ export default function LoginPage() {
 
         <div className="w-full max-w-sm space-y-4">
 
-          <form onSubmit={handleManualLogin} className="space-y-4">
+          <form action={formAction} className="space-y-4">
             <div>
               <label htmlFor="cedula" className="block text-sm font-medium text-zinc-700 mb-1">
                 Número de cédula
               </label>
               <input
                 id="cedula"
+                name="cedula"
                 type="text"
                 required
                 pattern="[0-9]{10}"
@@ -87,6 +65,7 @@ export default function LoginPage() {
               </label>
               <input
                 id="password"
+                name="password"
                 type="password"
                 required
                 value={password}
@@ -96,16 +75,16 @@ export default function LoginPage() {
               />
             </div>
 
-            {error && (
-              <p className="text-brand-red text-sm text-center bg-red-50 rounded-xl p-3">{error}</p>
+            {state && !state.ok && (
+              <p className="text-brand-red text-sm text-center bg-red-50 rounded-xl p-3">{state.error}</p>
             )}
 
             <button
               type="submit"
-              disabled={pending}
+              disabled={isPending}
               className="w-full py-4 bg-brand-blue text-white rounded-xl font-semibold text-lg hover:bg-blue-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {pending ? "Ingresando..." : "Ingresar"}
+              {isPending ? "Ingresando..." : "Ingresar"}
             </button>
           </form>
         </div>
